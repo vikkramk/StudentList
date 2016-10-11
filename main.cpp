@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+#include <cstring>
 
 //Command codes
 #define EXIT 0
@@ -10,15 +11,16 @@
 #define DELETE 3
 
 struct Student {
-	char name[80];
+	char fname[80];
+	char lname[80];
 	int id;
 	float gpa;
 };
 
 //Functions
-void print(std::vector<Student>);
-void add(std::vector<Student>);
-void remove(std::vector<Student>);
+void print(vector<Student*>* list);
+void add(vector<Student*>* list;
+void remove(vector<Student*>* list);
 int getCommand();
 
 using namespace std;
@@ -26,11 +28,11 @@ using namespace std;
 int main() {
 	char* command;
 	bool done = false;
-	vector<Student> lisit;	
+	vector<Student> list;
 
 	while (!done) {
 		switch(getCommand()) {
-			case EXIT: done = false;	break;
+			case QUIT: done = false;	break;
 			case PRINT: print(list);	break;
 			case ADD: add(list);		break;
 			case DELETE: remove(list);	break;
@@ -43,35 +45,32 @@ int main() {
 int getCommand(){
 	bool valid = false;
 	char command[80];
+	char* commands[4] = {"QUIT", "PRINT", "ADD", "DELETE"};
 
 	cout << "Enter command:";
 	while(!valid) {
 		cin >> command;
-		if (!(cin || cin.peek()))
-			valid = true;
-		else {
-			
+		for (int i = 0; i < 4; i++) {
+			if (strcmp(command, commands[i])) valid = true;
 		}
-
+		if (!valid) cout << "Enter a valid command:";
 	}
-
 }
 
-void print(vector<Student> list) {
+void print(vector<Student*>* list) {
 	for (int i = 0; i < vector.size(); i++)
-		cout << vector[i].name << " " << vector[i].id
+		cout << vector[i].fname << " " << vector[i].lname << " " << vector[i].id
 			<< " " << vector[i].gpa;
-
 }
 
-void add(vector<Student> list) {
+void add(vector<Student*>* list) {
 	bool valid;
 
 	list.push_back(Student());
-	cout << "Enter name:";
+	cout << "Enter first name:";
 	valid = false;
 	while (!valid) {
-		cin >> list[list.size()-1].name;
+		cin >> list[list.size()-1].fname;
 		if (!(cin || cin.peek()))
 			valid = true;
 		else {
@@ -80,6 +79,21 @@ void add(vector<Student> list) {
 			cout << "Error on name. Enter again:";
 		}
 	}
+
+	list.push_back(Student());
+	cout << "Enter last name:";
+	valid = false;
+	while (!valid) {
+		cin >> list[list.size()-1].lname;
+		if (!(cin || cin.peek()))
+			valid = true;
+		else {
+			cin.ignore(1000, '\n');
+			cin.clear();
+			cout << "Error on name. Enter again:";
+		}
+	}
+
 
 	cout << "Enter id #:";
 	valid = false;
@@ -108,7 +122,7 @@ void add(vector<Student> list) {
 	}
 }
 
-void remove(vector<Student> list) {
+void remove(vector<Student*>* list) {
 	int id;
 	bool valid = false;
 
@@ -127,4 +141,4 @@ void remove(vector<Student> list) {
 			}
 		}
 	}
-}
+->
