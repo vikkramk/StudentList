@@ -1,6 +1,7 @@
 /*Student List*/
 
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <cstring>
 
@@ -33,7 +34,7 @@ int main() {
 
 	while (!done) {
 		switch(getCommand()) {
-			case QUIT: done = false;	break;
+			case QUIT: done = true; 	break;
 			case PRINT: print(&list);	break;
 			case ADD: add(&list);		break;
 			case DELETE: remove(&list);	break;
@@ -49,107 +50,112 @@ int getCommand(){
 	char* commands[4] = {"QUIT", "PRINT", "ADD", "DELETE"};
 	int code;
 
-	cout << "Enter command:" << endl;
+	cout << "Enter command:" << flush;
 	while(!valid) {
 		cin >> command;
 	
-		if (cin || cin.peek()) {
+		if (cin.fail()	|| cin.peek()!=10) {
+			cout << cin.peek();
 			cin.ignore(1000,'\n');
 			cin.clear();
 		}
 		else {
 			for (int i = 0; i < 4; i++) {
-				if (strcmp(command, commands[i])) {
+				//cout << commands[i] << flush;
+				if (0==strcmp(command, commands[i])) {
 				       	code = i;
 					valid = true;
 				}
 			}
 		}
-		if (!valid) cout << "Enter valid command:" << endl;
+		if (!valid) cout << "Enter valid command:" << flush;
 	}
+
+	return code;
 }
 
 void print(vector<Student*>* list) {
 	for (int i = 0; i < list->size(); i++)
 		cout << list->at(i)->fname << " " << list->at(i)->lname << " " << list->at(i)->id
-			<< " " << list->at(i)->gpa << '\n' << endl;
+			<< " " << setprecision(3) << fixed << list->at(i)->gpa << '\n' << flush;
 }
 
 void add(vector<Student*>* list) {
 	bool valid;
+	Student* s = new Student();
 
-	list->push_back(&Student()):;
-	cout << "Enter first name:" << endl;
+	cout << "Enter first name:" << flush;
 	valid = false;
 	while (!valid) {
-		cin >> list->at(list->size()-1)->fname;
-		if (!(cin || cin.peek()))
+		cin >> s->fname;
+		if (!(cin.fail() || cin.peek()!=10))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
 			cin.clear();
-			cout << "Error on name. Enter again:" << endl;
+			cout << "Error on name. Enter again:" << flush;
 		}
 	}
 
-	cout << "Enter last name:" << endl;
+	cout << "Enter last name:" << flush;
 	valid = false;
 	while (!valid) {
-		cin >> list->at(list->size()-1)->lname;
-		if (!(cin || cin.peek()))
+		cin >> s->lname;
+		if (!(cin.fail() || cin.peek()!=10))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
 			cin.clear();
-			cout << "Error on name. Enter again:" << endl;
+			cout << "Error on name. Enter again:" << flush;
 		}
 	}
 
 
-	cout << "Enter id #:" << endl;
+	cout << "Enter id #:" << flush;
 	valid = false;
 	while(!valid) {
-		cin >> list->at(list->size()-1)->id;
-		if (!(cin || list[list->size()-1]->id > 999999))
+		cin >> s->id;
+		if (!(cin.fail() || s->id > 999999))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
 			cin.clear();
-			cout << "Error on id. Enter again:" << endl;
+			cout << "Error on id. Enter again:" << flush;
 		}
 	}
 
-	cout << "Enter GPA:" << endl;
+	cout << "Enter GPA:" << flush;
 	valid = false;
 	while(!valid) {
-		cin >> list->at(list->size()-1)->gpa;
-		if (!(cin || list->at(list->size()-1)->gpa > 5.0 || list->at(list->size()-1)->gpa < 0.0))
+		cin >> s->gpa;
+		if (!(cin.fail() || s->gpa > 5.0 || s->gpa < 0.0))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
 			cin.clear();
-			cout << "Error on GPA. Enter again:" << endl;
+			cout << "Error on GPA. Enter again:" << flush;
 		}
 	}
+
+	cout << "Student added\n" << flush;
+
+	list->push_back(s);
 }
 
 void remove(vector<Student*>* list) {
 	int id;
 	bool valid = false;
 
-	cout << "Enter id" << endl;
-	while(!valid) {
-		cin >> id;
-		if (!(cin || id > 999999))
-			valid = false;
-		else
-			cout << "Error on id. Enter again" << endl;
-
+	cout << "Enter id" << flush;
+	cin >> id;
+	if (!(cin.fail() || id > 999999)) {
 		for (int i = 0; i < list->size(); i++) {
-			if (list[i]->id == id) {
+			if (list->at(i)->id == id) {
 				list->erase(list->begin() + i);
 				valid = true;
 			}
 		}
 	}
+	
+	if (!valid) cout << "Error on id";
 }
