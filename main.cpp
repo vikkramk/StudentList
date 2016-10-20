@@ -75,9 +75,11 @@ int getCommand(){
 }
 
 void print(vector<Student*>* list) {
+	if (list->size()==0)
+		cout << "List is empty\n" << flush;
 	for (int i = 0; i < list->size(); i++)
-		cout << list->at(i)->fname << " " << list->at(i)->lname << " " << list->at(i)->id
-			<< " " << setprecision(3) << fixed << list->at(i)->gpa << '\n' << flush;
+		cout << list->at(i)->fname << ", " << list->at(i)->lname << ", " << list->at(i)->id
+			<< ", " << setprecision(2) << fixed << list->at(i)->gpa << '\n' << flush;
 }
 
 void add(vector<Student*>* list) {
@@ -115,7 +117,7 @@ void add(vector<Student*>* list) {
 	valid = false;
 	while(!valid) {
 		cin >> s->id;
-		if (!(cin.fail() || s->id > 999999))
+		if (!(cin.fail() || s->id > 999999 || s->id < 0 || cin.peek()))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
@@ -128,7 +130,7 @@ void add(vector<Student*>* list) {
 	valid = false;
 	while(!valid) {
 		cin >> s->gpa;
-		if (!(cin.fail() || s->gpa > 5.0 || s->gpa < 0.0))
+		if (!(cin.fail() || s->gpa > 5.0 || s->gpa < 0.0 || cin.peek()))
 			valid = true;
 		else {
 			cin.ignore(1000, '\n');
@@ -146,7 +148,7 @@ void remove(vector<Student*>* list) {
 	int id;
 	bool valid = false;
 
-	cout << "Enter id" << flush;
+	cout << "Enter id:" << flush;
 	cin >> id;
 	if (!(cin.fail() || id > 999999)) {
 		for (int i = 0; i < list->size(); i++) {
@@ -156,6 +158,10 @@ void remove(vector<Student*>* list) {
 			}
 		}
 	}
-	
-	if (!valid) cout << "Error on id";
+	else {
+		cin.clear();
+		cin.ignore(1000,'\n');
+	}
+
+	if (!valid) cout << "Error on id\n" << flush;
 }
