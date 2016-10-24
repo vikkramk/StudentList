@@ -26,12 +26,13 @@ void add(vector<Student*>* list);
 void remove(vector<Student*>* list);
 int getCommand();
 
-
+//Main
 int main() {
 	char* command;
 	bool done = false;
-	vector<Student*> list;
+	vector<Student*> list; //
 
+	//Loop taking commands and executing until quit command given
 	while (!done) {
 		switch(getCommand()) {
 			case QUIT: done = true; 	break;
@@ -44,6 +45,7 @@ int main() {
 	return 0;
 }
 
+//Get Command, returns command code of command that is entered
 int getCommand(){
 	bool valid = false;
 	char command[80];
@@ -74,6 +76,7 @@ int getCommand(){
 	return code;
 }
 
+//Print all the information for each student in list
 void print(vector<Student*>* list) {
 	if (list->size()==0)
 		cout << "List is empty\n" << flush;
@@ -82,6 +85,7 @@ void print(vector<Student*>* list) {
 			<< ", " << setprecision(2) << fixed << list->at(i)->gpa << '\n' << flush;
 }
 
+//Add a new student to list, prompting user for information
 void add(vector<Student*>* list) {
 	bool valid;
 	Student* s = new Student();
@@ -117,9 +121,11 @@ void add(vector<Student*>* list) {
 	valid = false;
 	while(!valid) {
 		cin >> s->id;
-		if (!(cin.fail() || s->id > 999999 || s->id < 0 || cin.peek()))
+		if (!(cin.fail() || s->id > 999999 || s->id < 0 || (cin.peek() && cin.peek()!='\n'))) {
 			valid = true;
+		}
 		else {
+			cout << cin.peek();
 			cin.ignore(1000, '\n');
 			cin.clear();
 			cout << "Error on id. Enter again:" << flush;
@@ -144,6 +150,9 @@ void add(vector<Student*>* list) {
 	list->push_back(s);
 }
 
+
+/*Remove a student from list as identified by id number
+**Note: No error collection*/
 void remove(vector<Student*>* list) {
 	int id;
 	bool valid = false;
