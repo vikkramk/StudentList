@@ -4,12 +4,15 @@
 #include <iomanip>
 #include <vector>
 #include <cstring>
+#include <cstdlib>
 
 //Command codes
 #define QUIT 0
 #define PRINT 1
 #define ADD 2
 #define DELETE 3
+
+#define EOF -1
 
 using namespace std;
 
@@ -57,7 +60,6 @@ int getCommand(){
 		cin >> command;
 	
 		if (cin.fail()	|| cin.peek()!=10) {
-			cout << cin.peek();
 			cin.ignore(1000,'\n');
 			cin.clear();
 		}
@@ -88,61 +90,43 @@ void print(vector<Student*>* list) {
 //Add a new student to list, prompting user for information
 void add(vector<Student*>* list) {
 	bool valid;
+	char input[7];
+	char* check;
 	Student* s = new Student();
 
 	cout << "Enter first name:" << flush;
-	valid = false;
-	while (!valid) {
-		cin >> s->fname;
-		if (!(cin.fail() || cin.peek()!=10))
-			valid = true;
-		else {
-			cin.ignore(1000, '\n');
-			cin.clear();
-			cout << "Error on name. Enter again:" << flush;
-		}
-	}
+	cin >> s->fname;
 
 	cout << "Enter last name:" << flush;
-	valid = false;
-	while (!valid) {
-		cin >> s->lname;
-		if (!(cin.fail() || cin.peek()!=10))
-			valid = true;
-		else {
-			cin.ignore(1000, '\n');
-			cin.clear();
-			cout << "Error on name. Enter again:" << flush;
-		}
-	}
-
+	cin >> s->lname;
 
 	cout << "Enter id #:" << flush;
 	valid = false;
+	cin.ignore(1000,'\n');
 	while(!valid) {
-		cin >> s->id;
-		if (!(cin.fail() || s->id > 999999 || s->id < 0 || (cin.peek() && cin.peek()!='\n'))) {
-			valid = true;
-		}
-		else {
-			cout << cin.peek();
-			cin.ignore(1000, '\n');
-			cin.clear();
-			cout << "Error on id. Enter again:" << flush;
-		}
+		cin.getline(input, 7);
+		if (strlen(input) == 6 && !cin.fail() && (cin.readsome(check,1)==0 || (*check)=='\n')) 
+			if (input[0]=='0' && atoi(input)==0 || (s->id=atoi(input)))
+				valid = true;
+		if (!valid)
+			cout << "Error on ID. Enter again:";
+
+		cin.clear();
+		cin.ignore(1000,'\n');
 	}
 
-	cout << "Enter GPA:" << flush;
-	valid = false;
+	cout << "Enter GPA:";
+	valid=false;
 	while(!valid) {
-		cin >> s->gpa;
-		if (!(cin.fail() || s->gpa > 5.0 || s->gpa < 0.0 || cin.peek()))
-			valid = true;
-		else {
-			cin.ignore(1000, '\n');
-			cin.clear();
-			cout << "Error on GPA. Enter again:" << flush;
-		}
+		cin.getline(input, 4);
+		if (strlen(input) == 3 && !cin.fail() && cin.readsome(NULL,1)==0)
+			if (input[0]=='0' && atof(input)==0 || (s->gpa=atof(input)))
+				valid = true;
+		if (!valid)
+			cout << "Error on GPA. Enter again:";
+
+		cin.clear();
+		cin.ignore(1000,'\n');
 	}
 
 	cout << "Student added\n" << flush;
