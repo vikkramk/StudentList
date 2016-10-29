@@ -81,7 +81,7 @@ void print(vector<Student*>* list) {
 	if (list->size()==0)
 		cout << "List is empty\n" << flush;
 	for (int i = 0; i < list->size(); i++)
-		cout << list->at(i)->fname << list->at(i)->lname << ", " << list->at(i)->id
+		cout << list->at(i)->fname << " " << list->at(i)->lname << ", " << list->at(i)->id
 			<< ", " << setprecision(2) << fixed << list->at(i)->gpa << '\n' << flush;
 }
 
@@ -154,8 +154,9 @@ void remove(vector<Student*>* list) {
 	if (!(cin.fail() || id > 999999)) {
 		for (int i = 0; i < list->size(); i++) {
 			if (list->at(i)->id == id) {
+				delete list->at(i);
 				list->erase(list->begin() + i);
-				cout << "Student deleted";
+				cout << "Student deleted\n" << flush;
 				valid = true;
 			}
 		}
