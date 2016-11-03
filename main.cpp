@@ -50,7 +50,7 @@ int main() {
 int getCommand(){
 	bool valid = false;
 	char command[80];
-	char* commands[4] = {"QUIT", "PRINT", "ADD", "DELETE"};
+	const char* commands[4] = {"QUIT", "PRINT", "ADD", "DELETE"};
 	int code;
 
 	cout << "Enter command:" << flush;
