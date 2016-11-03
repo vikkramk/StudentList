@@ -1,4 +1,7 @@
-/*Student List*/
+/*Student List
+ * Example of the use of structs and pointers
+ * Provides commands to edit a list of Student struct
+ * */
 
 #include <iostream>
 #include <iomanip>
